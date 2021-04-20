@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weather_app/blocs/weather_bloc.dart';
+import 'package:weather_app/ui/weather_list_form.dart';
 
 import 'utils/network_connection/internet_status_check.dart';
 
@@ -17,10 +19,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: Colors.transparent
-        ))
+          statusBarColor: Colors.transparent),
+        backgroundColor: Colors.white)
       ),
-      home: MyHomePage(title: 'Weather'),
+      home: MyHomePage(),
     );
   }
 }
@@ -36,29 +38,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  WeatherBloc get weatherBloc => WeatherBloc();
+
+  @override
+  void initState() {
+    weatherBloc.getWeatherElements();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backwardsCompatibility: false,
-        elevation: 0,
-        title: Text(widget.title ?? '',
-        style: TextStyle(
-          color: Colors.black
-        ),),
-        backgroundColor: Colors.white,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Weather Application',
-            ),
-          ],
-        ),
-      ),
-    );
+    return WeatherListForm();
   }
 }

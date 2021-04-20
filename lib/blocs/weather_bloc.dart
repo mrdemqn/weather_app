@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/models/city_item.dart';
 import 'package:weather_app/models/weather_element.dart';
 import 'package:weather_app/repository/weather_repository.dart';
 import 'package:weather_app/utils/network_connection/internet_status_check.dart';
@@ -30,6 +31,10 @@ class WeatherBloc {
   StreamSubscription<bool>? hasConnectionSub;
 
   List<WeatherElement> weatherElements = [];
+
+  CityItem? _currentCity;
+  CityItem? get currentCity => _currentCity;
+  set setCity(CityItem? v) => _currentCity = v;
 
   Future<void> getWeatherElements() async {
     bool? hasConnection = await connectionStatus.checkConnection();
