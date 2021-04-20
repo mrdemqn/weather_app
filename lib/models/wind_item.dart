@@ -1,6 +1,6 @@
 class WindItem {
-  final String? windSpeed;
-  final String? windDirection;
+  final double? windSpeed;
+  final int? windDirection;
 
   WindItem({
     this.windSpeed,

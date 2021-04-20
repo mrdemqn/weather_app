@@ -1,7 +1,7 @@
 class MainItem {
-  final String? temperature;
-  final String? groundLevel;
-  final String? humidity;
+  final double? temperature;
+  final int? groundLevel;
+  final int? humidity;
 
   MainItem({
     this.temperature,

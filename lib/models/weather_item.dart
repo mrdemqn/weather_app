@@ -7,7 +7,7 @@ class WeatherItem {
     this.description
   });
 
-  factory WeatherItem.fromJson({required List<Map<String, dynamic>> json}) {
+  factory WeatherItem.fromJson({required List<dynamic> json}) {
     return WeatherItem(
       main: json.first['main'],
       description: json.first['description']
