@@ -26,7 +26,7 @@ class WeatherListForm extends StatelessWidget {
               backwardsCompatibility: false,
               elevation: 0,
               title: Text(
-                '${weatherBloc.currentCity?.name}',
+                '${weatherBloc.currentCity?.name ?? ''}',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
