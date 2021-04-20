@@ -5,6 +5,8 @@ import 'package:weather_app/models/weather_element.dart';
 import 'package:weather_app/ui/internet_connection_lost_form.dart';
 import 'package:weather_app/ui/weather_list_item.dart';
 
+import 'wait_list_form.dart';
+
 class WeatherListForm extends StatelessWidget {
 
   WeatherBloc get weatherBloc => WeatherBloc();
@@ -15,8 +17,8 @@ class WeatherListForm extends StatelessWidget {
       initialData: weatherBloc.weatherElements,
       stream: weatherBloc.weatherStream,
       builder: (context, snapshot) {
-        if (snapshot.hasData && !snapshot.hasError)
-          return Scaffold(
+        if (snapshot.hasData && !snapshot.hasError && snapshot.connectionState != ConnectionState.waiting)
+          return WaitListForm();/*Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
               backwardsCompatibility: false,
@@ -38,15 +40,11 @@ class WeatherListForm extends StatelessWidget {
                   return WeatherListItem(weatherElement: snapshot.data?[i]);
                 }),
             ),
-          );
+          );*/
         else if (snapshot.hasError && snapshot.error == NetworkError)
           return InternetConnectionLostForm();
         else
-          return Container(
-            height: double.infinity,
-            width: double.infinity,
-            color: Colors.blueAccent,
-          );
+          return WaitListForm();
       }
     );
   }
