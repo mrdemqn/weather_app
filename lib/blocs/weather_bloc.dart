@@ -67,3 +67,7 @@ extension IntExt on int {
   String twoDigitsMin(int? n) => n.toString().padLeft(2, '0');
   String? get twoDigits => twoDigitsMin(this.remainder(60));
 }
+
+extension StringExt on String {
+  String capitalize() => '${this[0].toUpperCase()}${this.substring(1)}';
+}

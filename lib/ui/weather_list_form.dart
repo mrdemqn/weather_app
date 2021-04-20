@@ -29,11 +29,14 @@ class WeatherListForm extends StatelessWidget {
                 ),
               ),
             ),
-            body: ListView.builder(
-              itemCount: snapshot.data?.length ?? 0,
-              itemBuilder: (context, i) {
-                return WeatherListItem(weatherElement: snapshot.data?[i]);
-              }),
+            body: SafeArea(
+              top: false,
+              child: ListView.builder(
+                itemCount: snapshot.data?.length ?? 0,
+                itemBuilder: (context, i) {
+                  return WeatherListItem(weatherElement: snapshot.data?[i]);
+                }),
+            ),
           );
         else if (snapshot.hasError)
           return InternetConnectionLostForm();

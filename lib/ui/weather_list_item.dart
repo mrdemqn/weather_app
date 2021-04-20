@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/blocs/weather_bloc.dart';
 import 'package:weather_app/models/weather_element.dart';
+import 'package:weather_app/ui/weather_details_form.dart';
 
 class WeatherListItem extends StatelessWidget {
   final WeatherElement? weatherElement;
@@ -26,7 +27,7 @@ class WeatherListItem extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        '${weatherElement?.weatherItem?.description}',
+        '${weatherElement?.weatherItem?.description?.capitalize()}',
         style: TextStyle(
             color: Colors.black,
             fontSize: 14,
@@ -41,6 +42,10 @@ class WeatherListItem extends StatelessWidget {
             fontWeight: FontWeight.w500
         ),
       ),
+      onTap: () {
+        Navigator.push(context, CupertinoPageRoute(
+            builder: (context) => WeatherDetailsForm(weatherElement: weatherElement)));
+      },
     );
   }
 }
