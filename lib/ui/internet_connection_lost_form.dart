@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/blocs/weather_bloc.dart';
 
 class InternetConnectionLostForm extends StatelessWidget {
 
-  WeatherBloc get weatherBloc => WeatherBloc();
-
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Text(
+          'Пожалуйста, проверьте интернет соединение...',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 24,
+            fontWeight: FontWeight.w500
+          ),
+        ),
+      ),
+    );
   }
 }

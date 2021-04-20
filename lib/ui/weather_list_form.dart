@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/blocs/weather_bloc.dart';
+import 'package:weather_app/errors/network_error.dart';
 import 'package:weather_app/models/weather_element.dart';
 import 'package:weather_app/ui/internet_connection_lost_form.dart';
 import 'package:weather_app/ui/weather_list_item.dart';
@@ -38,10 +39,14 @@ class WeatherListForm extends StatelessWidget {
                 }),
             ),
           );
-        else if (snapshot.hasError)
+        else if (snapshot.hasError && snapshot.error == NetworkError)
           return InternetConnectionLostForm();
         else
-          return Container();
+          return Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Colors.blueAccent,
+          );
       }
     );
   }

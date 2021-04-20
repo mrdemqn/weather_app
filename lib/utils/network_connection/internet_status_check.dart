@@ -1,4 +1,5 @@
 import 'dart:async'; //For StreamController/Stream
+import 'dart:developer';
 import 'dart:io'; //InternetAddress utility
 
 import 'package:connectivity/connectivity.dart';
@@ -18,17 +19,10 @@ class ConnectionStatus {
   final Connectivity _connectivity = Connectivity();
   Connectivity get connectivity => _connectivity;
 
-  StreamSubscription? networkStatus;
-
   Stream<bool> get connectionChange => connectionChangeSC.stream;
 
   void deactivate() {
     connectionChangeSC.close();
-    networkStatus?.cancel();
-  }
-
-  void listenConnection() {
-    networkStatus = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
   Future<bool?> checkConnection() async {
@@ -49,22 +43,5 @@ class ConnectionStatus {
       connectionChangeSC.add(_hasConnection);
     }
     return _hasConnection;
-  }
-
-  Future<void> _updateConnectionStatus(ConnectivityResult? result) async {
-    switch (result) {
-      case ConnectivityResult.wifi:
-        checkConnection();
-        break;
-      case ConnectivityResult.mobile:
-        checkConnection();
-        break;
-      case ConnectivityResult.none:
-        checkConnection();
-        break;
-      default:
-        checkConnection();
-        break;
-    }
   }
 }

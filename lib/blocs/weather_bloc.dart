@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/errors/network_error.dart';
 import 'package:weather_app/models/city_item.dart';
 import 'package:weather_app/models/weather_element.dart';
 import 'package:weather_app/repository/weather_repository.dart';
@@ -28,28 +29,33 @@ class WeatherBloc {
   Stream<List<WeatherElement>> get weatherStream => weatherSC.stream;
   Sink<List<WeatherElement>> get weatherSink => weatherSC.sink;
 
-  StreamSubscription<bool>? hasConnectionSub;
+  StreamSubscription<ConnectivityResult>? hasConnectionSub;
 
   List<WeatherElement> weatherElements = [];
+  bool gettingWeather = false;
 
   CityItem? _currentCity;
   CityItem? get currentCity => _currentCity;
   set setCity(CityItem? v) => _currentCity = v;
 
   Future<void> getWeatherElements() async {
-    bool? hasConnection = await connectionStatus.checkConnection();
-    if (hasConnection ?? false) {
-      connectionStatus.listenConnection();
+    await connectionStatus.checkConnection();
+    hasConnectionSub = connectionStatus.connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    if (connectionStatus.hasConnection) {
       Position? position = await getGeoPosition();
       if (position != null) {
-        weatherElements = await _weatherRepository.fetchWeatherApi(position.latitude, position.longitude);
+        weatherElements = await _weatherRepository.fetchWeatherApi(position.latitude, position.longitude)
+        .catchError((onError) {
+          weatherSC.addError(NullThrownError);
+        });
         weatherSink.add(weatherElements);
-        connectionStatus.networkStatus?.cancel();
+        hasConnectionSub?.cancel();
       } else {
         weatherSC.addError(NullThrownError);
+        await getWeatherElements();
       }
-    } else {
-      weatherSC.addError(NullThrownError);
+    } else if (weatherElements.isEmpty) {
+      weatherSC.addError(NetworkError);
     }
   }
 
@@ -60,6 +66,15 @@ class WeatherBloc {
       log('Get Position Error -> $onError');
       weatherSC.addError(NullThrownError);
     });
+  }
+
+  Future<void> _updateConnectionStatus(ConnectivityResult? result) async {
+    bool? hasConnection = await connectionStatus.checkConnection();
+    if (hasConnection != null && hasConnection && !gettingWeather) {
+      gettingWeather = true;
+      await getWeatherElements();
+      gettingWeather = false;
+    }
   }
 }
 

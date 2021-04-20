@@ -11,10 +11,12 @@ class NetworkService {
   NetworkService._();
 
   Future<Map<String, dynamic>> getApi(Uri uri) async {
-    return await get(uri)
-    .then((response) => jsonDecode(response.body))
-    .catchError((onError) {
-      log('CatchError -> $onError');
-    });
+    Map<String, dynamic> responseMap = Map();
+    await get(uri)
+        .then((response) => responseMap = jsonDecode(response.body))
+        .catchError((onError) {
+          log('CatchError -> $onError');
+        });
+    return responseMap;
   }
 }
