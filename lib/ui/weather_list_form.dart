@@ -18,7 +18,7 @@ class WeatherListForm extends StatelessWidget {
       stream: weatherBloc.weatherStream,
       builder: (context, snapshot) {
         if (snapshot.hasData && !snapshot.hasError && snapshot.connectionState != ConnectionState.waiting)
-          return WaitListForm();/*Scaffold(
+          return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
               backwardsCompatibility: false,
@@ -40,7 +40,7 @@ class WeatherListForm extends StatelessWidget {
                   return WeatherListItem(weatherElement: snapshot.data?[i]);
                 }),
             ),
-          );*/
+          );
         else if (snapshot.hasError && snapshot.error == NetworkError)
           return InternetConnectionLostForm();
         else
