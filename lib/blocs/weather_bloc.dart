@@ -8,6 +8,7 @@ import 'package:weather_app/models/city_item.dart';
 import 'package:weather_app/models/weather_element.dart';
 import 'package:weather_app/repository/weather_repository.dart';
 import 'package:weather_app/utils/network_connection/internet_status_check.dart';
+import 'package:weather_app/utils/share.dart';
 
 class WeatherBloc {
   static final _instance = WeatherBloc._();
@@ -24,6 +25,7 @@ class WeatherBloc {
 
   WeatherRepository get _weatherRepository => WeatherRepository();
   ConnectionStatus get connectionStatus => ConnectionStatus();
+  ShareText get shareText => ShareText();
 
   StreamController<List<WeatherElement>> weatherSC = StreamController.broadcast();
   Stream<List<WeatherElement>> get weatherStream => weatherSC.stream;
@@ -75,6 +77,31 @@ class WeatherBloc {
       await getWeatherElements();
       gettingWeather = false;
     }
+  }
+
+  Future<void> shareWeatherText(String text) async {
+    await shareText.shareWeather(text);
+  }
+
+  String getWindDirection(num value) {
+    String direction = 'SE';
+    if (value >= 10 && value <= 80)
+      direction = 'NE';
+    else if (value > 80 && value < 100)
+      direction = 'E';
+    else if (value >= 100 && value <= 170)
+      direction = 'SE';
+    else if (value > 170 && value < 190)
+      direction = 'S';
+    else if (value >= 190 && value <= 260)
+      direction = 'SW';
+    else if (value > 260 && value < 280)
+      direction = 'W';
+    else if (value >= 280 && value <= 350)
+      direction = 'NW';
+    else if (value > 350 && value < 10)
+      direction = 'N';
+    return direction;
   }
 }
 

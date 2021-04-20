@@ -42,11 +42,8 @@ class WeatherDetailsForm extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 50),
-            Icon(
-              CupertinoIcons.sun_max_fill,
-              color: Colors.amber,
-              size: 60,
-            ),
+            Image.network(weatherElement!.weatherItem!.icon!,
+              width: 60,),
             SizedBox(height: 15),
             Text(
               '${weatherBloc.currentCity?.name}, ${weatherBloc.currentCity?.countryCode}',
@@ -146,7 +143,7 @@ class WeatherDetailsForm extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              '${weatherElement?.windItem?.windDirection}',
+                              '${weatherBloc.getWindDirection(weatherElement!.windItem!.windDirection!)}',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
@@ -200,8 +197,12 @@ class WeatherDetailsForm extends StatelessWidget {
                   ),
                 ),
               ),
-              onTap: () {
-                log('Share Text');
+              onTap: () async {
+                await weatherBloc.shareWeatherText(
+                    'Влажность - ${weatherElement?.mainItem?.humidity} %\n'
+                    'Скорость ветра - ${weatherElement?.windItem?.windSpeed?.round()} km/h\n'
+                    'Направление ветра - ${weatherBloc.getWindDirection(weatherElement!.windItem!.windDirection!)}'
+                );
               },
             ),
           ],

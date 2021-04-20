@@ -13,11 +13,8 @@ class WeatherListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      leading: Icon(
-        CupertinoIcons.sun_max_fill,
-        size: 50,
-        color: Colors.amber,
-      ),
+      leading: Image.network(weatherElement!.weatherItem!.icon!,
+      width: 50,),
       title: Text(
         '${weatherElement?.dateTime?.hour.twoDigits}:${weatherElement?.dateTime?.minute.twoDigits}',
         style: TextStyle(
