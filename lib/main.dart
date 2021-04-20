@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
+import 'utils/network_connection/internet_status_check.dart';
+
+ConnectionStatus get connectionStatus => ConnectionStatus();
+void main() async {
+  await connectionStatus.checkConnection();
   runApp(MyApp());
 }
 

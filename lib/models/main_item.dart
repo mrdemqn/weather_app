@@ -1,5 +1,5 @@
 class MainItem {
-  final double? temperature;
+  final num? temperature;
   final int? groundLevel;
   final int? humidity;
 
