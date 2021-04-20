@@ -27,4 +27,11 @@ class WeatherRepository {
         .map((json) => WeatherElement.fromJson(json: json)).toList();
     return Future.value(weatherElements);
   }
+
+  Future<WeatherElement> fetchCurrentWeatherApi(double? lat, double? lon) async {
+    final uri = Uri.parse('https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=metric&appid=$apiKey');
+    Map<String, dynamic> response = await _networkService.getApi(uri);
+    WeatherElement weatherElement = WeatherElement.fromJson(json: response);
+    return Future.value(weatherElement);
+  }
 }

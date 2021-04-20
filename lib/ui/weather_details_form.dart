@@ -79,7 +79,9 @@ class WeatherDetailsForm extends StatelessWidget {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            '${weatherElement?.mainItem?.humidity} %',
+                            weatherElement?.mainItem?.humidity != null
+                              ? '${weatherElement?.mainItem?.humidity} %'
+                              : 'Not found',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
@@ -100,7 +102,9 @@ class WeatherDetailsForm extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              '${weatherElement?.windItem?.windSpeed?.round()} km/h',
+                                weatherElement?.windItem?.windSpeed != null
+                                  ? '${weatherElement?.windItem?.windSpeed?.round()} km/h'
+                                  : 'Not found',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
@@ -143,7 +147,9 @@ class WeatherDetailsForm extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              '${weatherBloc.getWindDirection(weatherElement!.windItem!.windDirection!)}',
+                                weatherElement!.windItem!.windDirection != null
+                                    ? '${weatherBloc.getWindDirection(weatherElement!.windItem!.windDirection!)}'
+                                    : 'Not found',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
@@ -163,7 +169,9 @@ class WeatherDetailsForm extends StatelessWidget {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            '${weatherElement?.mainItem?.groundLevel} hPa',
+                            weatherElement?.mainItem?.groundLevel != null
+                                ? '${weatherElement?.mainItem?.groundLevel} hPa'
+                                : 'Not found',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,

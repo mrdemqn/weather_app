@@ -34,6 +34,7 @@ class WeatherBloc {
   StreamSubscription<ConnectivityResult>? hasConnectionSub;
 
   List<WeatherElement> weatherElements = [];
+  late WeatherElement currentWeather;
   bool gettingWeather = false;
 
   CityItem? _currentCity;
@@ -47,6 +48,27 @@ class WeatherBloc {
       Position? position = await getGeoPosition();
       if (position != null) {
         weatherElements = await _weatherRepository.fetchWeatherApi(position.latitude, position.longitude)
+        .catchError((onError) {
+          weatherSC.addError(NullThrownError);
+        });
+        weatherSink.add(weatherElements);
+        hasConnectionSub?.cancel();
+      } else {
+        weatherSC.addError(NullThrownError);
+        await getWeatherElements();
+      }
+    } else if (weatherElements.isEmpty) {
+      weatherSC.addError(NetworkError);
+    }
+  }
+
+  Future<void> getCurrentWeather() async {
+    await connectionStatus.checkConnection();
+    hasConnectionSub = connectionStatus.connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    if (connectionStatus.hasConnection) {
+      Position? position = await getGeoPosition();
+      if (position != null) {
+        currentWeather = await _weatherRepository.fetchCurrentWeatherApi(position.latitude, position.longitude)
         .catchError((onError) {
           weatherSC.addError(NullThrownError);
         });

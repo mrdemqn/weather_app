@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/blocs/weather_bloc.dart';
 import 'package:weather_app/errors/network_error.dart';
@@ -6,6 +7,7 @@ import 'package:weather_app/ui/internet_connection_lost_form.dart';
 import 'package:weather_app/ui/weather_list_item.dart';
 
 import 'wait_list_form.dart';
+import 'weather_details_form.dart';
 
 class WeatherListForm extends StatelessWidget {
 
@@ -36,9 +38,27 @@ class WeatherListForm extends StatelessWidget {
               top: false,
               child: ListView.builder(
                 itemCount: snapshot.data?.length ?? 0,
+                padding: const EdgeInsets.only(bottom: 50),
                 itemBuilder: (context, i) {
                   return WeatherListItem(weatherElement: snapshot.data?[i]);
                 }),
+            ),
+            floatingActionButton: GestureDetector(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                child: Text('Current weather',
+                  style: TextStyle(
+                      color: Colors.white,
+                  ),),
+              ),
+              onTap: () async {
+                Navigator.push(context, CupertinoPageRoute(
+                    builder: (context) => WeatherDetailsForm(weatherElement: weatherBloc.currentWeather)));
+              },
             ),
           );
         else if (snapshot.hasError && snapshot.error == NetworkError)
